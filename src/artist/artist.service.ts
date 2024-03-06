@@ -50,6 +50,24 @@ export class ArtistService {
     const artist = db.artists.find((artist) => artist.id === id);
     if (!artist) return null;
 
+    db.tracks = db.tracks.map((track) => {
+      if (track.artistId === id) {
+        track.artistId = null;
+      }
+      return track;
+    });
+
+    db.albums = db.albums.map((album) => {
+      if (album.artistId === id) {
+        album.artistId = null;
+      }
+      return album;
+    });
+
+    db.favorites.artists = db.favorites.artists.filter(
+      (artistId) => artistId !== id,
+    );
+
     db.artists = db.artists.filter((artist) => artist.id !== id);
 
     return true;

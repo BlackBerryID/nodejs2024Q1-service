@@ -55,6 +55,17 @@ export class AlbumService {
     const album = db.albums.find((album) => album.id === id);
     if (!album) return null;
 
+    db.tracks = db.tracks.map((track) => {
+      if (track.albumId === id) {
+        track.albumId = null;
+      }
+      return track;
+    });
+
+    db.favorites.albums = db.favorites.albums.filter(
+      (albumId) => albumId !== id,
+    );
+
     db.albums = db.albums.filter((album) => album.id !== id);
 
     return true;

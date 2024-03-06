@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
+import { writeFile } from 'fs/promises';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,6 +16,7 @@ async function bootstrap() {
     .addTag('nestjs')
     .build();
   const document = SwaggerModule.createDocument(app, config);
+  await writeFile('./doc/api.yaml', JSON.stringify(document));
   SwaggerModule.setup('api', app, document);
 
   await app.listen(4000);

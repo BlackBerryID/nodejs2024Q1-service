@@ -9,12 +9,12 @@ export class CreateTrackDto {
   @ApiProperty()
   @IsString()
   @IsOptional()
-  artistId: string;
+  artistId: string | null;
 
   @ApiProperty()
   @IsString()
   @IsOptional()
-  albumId: string;
+  albumId: string | null;
 
   @ApiProperty()
   @IsInt()

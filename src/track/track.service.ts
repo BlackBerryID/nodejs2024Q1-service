@@ -38,8 +38,14 @@ export class TrackService {
     const updatedTrack: Track = {
       ...track,
       name: updateTrackDto.name,
-      artistId: updateTrackDto.artistId,
-      albumId: updateTrackDto.albumId,
+      artistId:
+        updateTrackDto.artistId !== undefined
+          ? updateTrackDto.artistId
+          : track.artistId,
+      albumId:
+        updateTrackDto.albumId !== undefined
+          ? updateTrackDto.albumId
+          : track.albumId,
       duration: updateTrackDto.duration,
     };
 

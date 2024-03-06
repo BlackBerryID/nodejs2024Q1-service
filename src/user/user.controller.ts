@@ -3,18 +3,17 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   HttpException,
   HttpStatus,
   Put,
   HttpCode,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { validate as uuidValidate } from 'uuid';
 
 @Controller('user')
 export class UserController {
@@ -31,11 +30,7 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    if (!uuidValidate(id)) {
-      throw new HttpException('userId is invalid', HttpStatus.BAD_REQUEST);
-    }
-
+  findOne(@Param('id', new ParseUUIDPipe()) id: string) {
     const response = this.userService.findOne(id);
 
     if (response) {
@@ -49,11 +44,10 @@ export class UserController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    if (!uuidValidate(id)) {
-      throw new HttpException('userId is invalid', HttpStatus.BAD_REQUEST);
-    }
-
+  update(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     const response = this.userService.update(id, updateUserDto);
 
     if (response) {
@@ -71,11 +65,7 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(204)
-  remove(@Param('id') id: string) {
-    if (!uuidValidate(id)) {
-      throw new HttpException('userId is invalid', HttpStatus.BAD_REQUEST);
-    }
-
+  remove(@Param('id', new ParseUUIDPipe()) id: string) {
     const response = this.userService.remove(id);
 
     if (!response) {
